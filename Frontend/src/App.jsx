@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Upload,
   Database,
@@ -53,9 +53,9 @@ function App() {
 
   useEffect(() => {
     fetchDatasets();
-  }, []);
+  }, [fetchDatasets]);
 
-  const fetchDatasets = async () => {
+  const fetchDatasets = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/datasets/`);
       const data = await response.json();
@@ -66,7 +66,7 @@ function App() {
     } catch (error) {
       console.error('Error fetching datasets:', error);
     }
-  };
+  }, [selectedDataset]);
 
   const fetchDatasetDetails = async id => {
     setLoading(true);
@@ -185,14 +185,14 @@ function App() {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-slate-900 to-slate-800 text-white transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-linear-to-b from-slate-900 to-slate-800 text-white transition-transform duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:static lg:translate-x-0`}
       >
         {/* Logo */}
         <div className="h-20 flex items-center justify-between px-6 border-b border-slate-700">
           <div className="flex items-center gap-2">
-            <div className="bg-gradient-to-br from-blue-400 to-cyan-400 p-2 rounded-lg">
+            <div className="bg-linear-to-br from-blue-400 to-cyan-400 p-2 rounded-lg">
               <Activity className="h-6 w-6 text-slate-900" />
             </div>
             <span className="font-bold text-lg">EquipViz</span>
@@ -247,7 +247,7 @@ function App() {
 
           <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-lg">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
                 EZ
               </div>
               <div className="text-sm">
@@ -316,7 +316,7 @@ function DashboardSection({ selectedDataset, downloadPDF, setActiveSection }) {
           </p>
           <button
             onClick={() => setActiveSection('upload')}
-            className="inline-block bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 transform"
+            className="inline-block bg-linear-to-r from-blue-600 to-cyan-600 text-white font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 transform"
           >
             Go to Upload Section
           </button>
@@ -350,7 +350,7 @@ function DashboardSection({ selectedDataset, downloadPDF, setActiveSection }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 rounded-xl p-8 text-white shadow-lg">
+      <div className="bg-linear-to-r from-blue-600 via-blue-700 to-cyan-600 rounded-xl p-8 text-white shadow-lg">
         <div className="flex justify-between items-start">
           <div>
             <h2 className="text-3xl font-bold mb-2">
@@ -437,7 +437,7 @@ function DashboardSection({ selectedDataset, downloadPDF, setActiveSection }) {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
+            <thead className="bg-linear-to-r from-gray-50 to-gray-100">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                   Equipment Name
@@ -504,7 +504,7 @@ function UploadSection({
         <div className="bg-white rounded-2xl shadow-2xl p-12 border-2 border-dashed border-blue-300">
           <div className="text-center">
             <div className="flex justify-center mb-6">
-              <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-4 rounded-full">
+              <div className="bg-linear-to-br from-blue-500 to-cyan-500 p-4 rounded-full">
                 <Upload className="h-12 w-12 text-white" />
               </div>
             </div>
@@ -515,7 +515,7 @@ function UploadSection({
               Upload a CSV file containing chemical equipment data for analysis
             </p>
 
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl mb-8 text-left border border-blue-200">
+            <div className="bg-linear-to-br from-blue-50 to-cyan-50 p-6 rounded-xl mb-8 text-left border border-blue-200">
               <p className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600" />
                 Required Columns:
@@ -537,7 +537,7 @@ function UploadSection({
                 className="hidden"
                 disabled={loading}
               />
-              <div className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 px-10 rounded-xl transition-all duration-200 inline-flex items-center gap-3 shadow-lg hover:shadow-xl transform hover:scale-105">
+              <div className="bg-linear-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 px-10 rounded-xl transition-all duration-200 inline-flex items-center gap-3 shadow-lg hover:shadow-xl transform hover:scale-105">
                 {loading ? (
                   <>
                     <Loader2 className="animate-spin h-6 w-6" />
@@ -676,7 +676,7 @@ function HistorySection({
                       e.stopPropagation();
                       downloadPDF(dataset.id);
                     }}
-                    className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white p-3 rounded-lg hover:shadow-lg transition-all duration-200 transform hover:scale-110"
+                    className="bg-linear-to-r from-blue-600 to-cyan-600 text-white p-3 rounded-lg hover:shadow-lg transition-all duration-200 transform hover:scale-110"
                     title="Download PDF"
                   >
                     <Download className="h-5 w-5" />
@@ -686,7 +686,7 @@ function HistorySection({
                       e.stopPropagation();
                       handleDeleteDataset(dataset.id);
                     }}
-                    className="bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-lg hover:shadow-lg transition-all duration-200 transform hover:scale-110"
+                    className="bg-linear-to-r from-red-600 to-red-700 text-white p-3 rounded-lg hover:shadow-lg transition-all duration-200 transform hover:scale-110"
                     title="Delete dataset"
                   >
                     <X className="h-5 w-5" />
@@ -704,7 +704,7 @@ function HistorySection({
 // Helper Components
 const StatCard = ({ label, value, gradient }) => (
   <div
-    className={`bg-gradient-to-br ${gradient} rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105`}
+    className={`bg-linear-to-br ${gradient} rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105`}
   >
     <div className="flex items-center justify-between mb-4">
       <Icon className="h-8 w-8 opacity-80" />
@@ -731,10 +731,10 @@ const ParameterRange = ({ label, min, max, avg, color }) => {
       </div>
       <div className="relative w-full bg-gray-200 rounded-full h-3 overflow-hidden">
         <div
-          className={`bg-gradient-to-r ${colorClasses[color]} h-3 rounded-full opacity-30 w-full`}
+          className={`bg-linear-to-r ${colorClasses[color]} h-3 rounded-full opacity-30 w-full`}
         />
         <div
-          className={`absolute top-0 bg-gradient-to-r ${colorClasses[color]} h-3 w-3 rounded-full shadow-lg`}
+          className={`absolute top-0 bg-linear-to-r ${colorClasses[color]} h-3 w-3 rounded-full shadow-lg`}
           style={{
             left: `${((avg - min) / (max - min)) * 100}%`,
             transform: 'translateX(-50%)',
