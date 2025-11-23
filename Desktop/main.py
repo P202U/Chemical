@@ -1,25 +1,18 @@
-"""
-Chemical Equipment Parameter Visualizer - Desktop Application
-Main application file with PyQt5 GUI
-"""
-
 import sys
 import os
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QLabel, QFileDialog, 
                              QTableWidget, QTableWidgetItem, QTabWidget, 
                              QMessageBox, QProgressBar, QComboBox, QGroupBox,
-                             QGridLayout, QHeaderView, QTextEdit, QSplitter)
+                             QGridLayout, QHeaderView, QTextEdit)
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont
 import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-import pandas as pd
 import requests
-import json
 from datetime import datetime
 
 # API Configuration

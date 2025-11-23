@@ -10,7 +10,7 @@ class Dataset(models.Model):
     filename = models.CharField(max_length=255)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     total_records = models.IntegerField(default=0)
-    summary_data = models.TextField(blank=True)  # JSON string
+    summary_data = models.TextField(blank=True)
     
     class Meta:
         ordering = ['-uploaded_at']

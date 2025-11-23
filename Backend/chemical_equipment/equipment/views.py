@@ -3,7 +3,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.http import HttpResponse
-from django.db.models import Avg, Count
 import pandas as pd
 import io
 from reportlab.lib.pagesizes import letter
